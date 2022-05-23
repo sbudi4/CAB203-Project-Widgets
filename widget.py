@@ -5,7 +5,20 @@ import csv
 # You can define some helper functions here if you like!
 
 def optimiseWidgets(filename):
-   # Code your solution here
+
+   # Reading the csv file:
+   with open(filename, 'r') as csv_file:
+      reader = csv.reader(csv_file)
+      
+      for row in reader:
+        print(row)
+
+   # SORT Machines, processes, and their capacities
+   # determine entry - should be the one with ONE ENTRY
+   # determine exits - neighbours and shit
+   # determine exit - should be the one with ONE EXIT
+
+   # Find maximum flow
 
    # Access functions from the imported files like this:
    n = graphs.N(V, E, u)
