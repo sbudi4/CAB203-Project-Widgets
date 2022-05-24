@@ -6,14 +6,53 @@ import csv
 
 def optimiseWidgets(filename):
 
-   # Reading the csv file:
+   # Reading the CSV file:
+   components = []
+
    with open(filename, 'r') as csv_file:
       reader = csv.reader(csv_file)
       
       for row in reader:
-        print(row)
+        components.append(row)
+   # Remove CSV Headers for processing:
+   components.pop(0)
 
-   # SORT Machines, processes, and their capacities
+   #### Formatting the CSV to use numbers instead of names ####
+   # Creating arrays to sort stuff:
+   buffer1 = []
+   buffer2 = []
+
+   machine = []
+   input = []
+   output = []
+
+   inputs = []
+   machines = []
+   outputs = []
+
+   # Assigning each machine a vertex:
+   for each in range(len(components)):
+      machine = [components[each][0], each]
+      machines.append(machine)
+
+      # Sorting the rest of CSV data:
+      # Assign each input a number of reference
+      input = components[each][2] 
+      if input not in buffer1:
+            buffer1.append(input)
+            inputs.append([input, each])
+
+   for each in 
+
+
+
+
+   print(machines)
+   print(inputs)
+   print(outputs)
+
+
+
    # determine entry - should be the one with ONE ENTRY
    # determine exits - neighbours and shit
    # determine exit - should be the one with ONE EXIT
@@ -21,8 +60,6 @@ def optimiseWidgets(filename):
    # Find maximum flow
 
    # Access functions from the imported files like this:
-   n = graphs.N(V, E, u)
-   t = digraphs.topOrdering(V, E)
 
    return machineSettings
 
