@@ -1,4 +1,5 @@
 from contextlib import nullcontext
+from gettext import find
 import graphs
 import digraphs
 import csv
@@ -19,21 +20,22 @@ def optimiseWidgets(filename):
    components.pop(0)
 
    #### Formatting the CSV to use numbers instead of names ####
-   # Creating arrays to sort stuff:
+   # Creating variables to sort stuff:
    vertex = []
    vertices = []
    edge = []
    edges = []
 
    sources = []
-   source = 'null'
+   drains = []
+   outputs = []
+   inputs = []
 
    # Assigning each machine a vertex:
    for each in range(len(components)):
       vertex = [components[each][0], components[each][2]]
       vertices.append(vertex)
 
-   
    # Creating graph edges and assigning their weights
    for each in range(len(vertices)):
       for product in range(len(components)):
@@ -41,20 +43,32 @@ def optimiseWidgets(filename):
             edge = [components[product][0], vertices[each][0], components[product][4]]
             edges.append(edge)
 
-   # determine source - should be UNIQUE INPUT
-   for input in components:
-      if input not in sources:
-         sources.append(input)
+   #### determinining source and drains #####
+   for each in range(len(components)):
+      outputs.append(components[each][3])
+      inputs.append(components[each][2])
+
+   outputMaterial = list(set(inputs)-set(outputs))
+   inputMaterial = list(set(outputs)-set(inputs))
+
+   for each in range(len(components)):
+      if outputMaterial[0] == components[each][2]:
+         sources.append(components[each][0])
+      if inputMaterial[0] == components[each][3]:
+         drains.append(components[each][0])
+
+   # Finding drain vertex
 
 
-   # determine drain - should be UNIQUE OUTPUT
+
 
 
    print(edges)
    print(sources)
+   print(drains)
 
    # Find maximum flow using function in digraphs.py
-   machineSettings = digraphs.maxFlow(V, E, w, s, d)
+   machineSettings = digraphs.maxFlow(V, E, w, s, drain)
 
    return machineSettings
 
