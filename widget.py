@@ -1,3 +1,4 @@
+from contextlib import nullcontext
 import graphs
 import digraphs
 import csv
@@ -6,7 +7,7 @@ import csv
 
 def optimiseWidgets(filename):
 
-   # Reading the CSV file:
+   #### Reading the CSV file: ####
    components = []
 
    with open(filename, 'r') as csv_file:
@@ -19,47 +20,41 @@ def optimiseWidgets(filename):
 
    #### Formatting the CSV to use numbers instead of names ####
    # Creating arrays to sort stuff:
-   buffer1 = []
-   buffer2 = []
+   vertex = []
+   vertices = []
+   edge = []
+   edges = []
 
-   machine = []
-   input = []
-   output = []
-
-   inputs = []
-   machines = []
-   outputs = []
+   sources = []
+   source = 'null'
 
    # Assigning each machine a vertex:
    for each in range(len(components)):
-      machine = [components[each][0], each]
-      machines.append(machine)
+      vertex = [components[each][0], components[each][2]]
+      vertices.append(vertex)
 
-      # Sorting the rest of CSV data:
-      # Assign each input a number of reference
-      input = components[each][2] 
-      if input not in buffer1:
-            buffer1.append(input)
-            inputs.append([input, each])
+   
+   # Creating graph edges and assigning their weights
+   for each in range(len(vertices)):
+      for product in range(len(components)):
+         if vertices[each][1] == components[product][3]:
+            edge = [components[product][0], vertices[each][0], components[product][4]]
+            edges.append(edge)
 
-   for each in 
-
-
-
-
-   print(machines)
-   print(inputs)
-   print(outputs)
+   # determine source - should be UNIQUE INPUT
+   for input in components:
+      if input not in sources:
+         sources.append(input)
 
 
+   # determine drain - should be UNIQUE OUTPUT
 
-   # determine entry - should be the one with ONE ENTRY
-   # determine exits - neighbours and shit
-   # determine exit - should be the one with ONE EXIT
 
-   # Find maximum flow
+   print(edges)
+   print(sources)
 
-   # Access functions from the imported files like this:
+   # Find maximum flow using function in digraphs.py
+   machineSettings = digraphs.maxFlow(V, E, w, s, d)
 
    return machineSettings
 
