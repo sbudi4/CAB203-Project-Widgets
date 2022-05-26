@@ -1,38 +1,33 @@
-from contextlib import nullcontext
-from gettext import find
-import graphs
+### Importing dependencies ###
 import digraphs
 import csv
-
-# You can define some helper functions here if you like!
 
 def optimiseWidgets(filename):
 
    #### Reading the CSV file: ####
    components = []
-
    with open(filename, 'r') as csv_file:
-      reader = csv.reader(csv_file)
-      
+      reader = csv.reader(csv_file) 
       for row in reader:
         components.append(row)
+
    # Remove CSV Headers for processing:
    components.pop(0)
 
    #### Formatting the CSV to use numbers instead of names ####
-   # Creating variables to sort stuff:
    vertex = []
    vertices = []
    edge = []
    edges = []
-
    sources = []
    drains = []
    outputs = []
    inputs = []
+   machines = []
 
    # Assigning each machine a vertex:
    for each in range(len(components)):
+      machines.append(components[each][0])
       vertex = [components[each][0], components[each][2]]
       vertices.append(vertex)
 
@@ -43,11 +38,10 @@ def optimiseWidgets(filename):
             edge = [components[product][0], vertices[each][0], components[product][4]]
             edges.append(edge)
 
-   #### determinining source and drains #####
+   #### determinining sources and drains #####
    for each in range(len(components)):
       outputs.append(components[each][3])
       inputs.append(components[each][2])
-
    outputMaterial = list(set(inputs)-set(outputs))
    inputMaterial = list(set(outputs)-set(inputs))
 
@@ -57,21 +51,19 @@ def optimiseWidgets(filename):
       if inputMaterial[0] == components[each][3]:
          drains.append(components[each][0])
 
-   # Finding drain vertex
+   #### Creating variables for use in the maxFlow function: #####
+   V = set(machines)
+   source = sources[0]
+   drain = drains[0]
+   w = {}
+   for each in range(len(components)):
+      w[edges[each][0], edges[each][1]] = int(edges[each][2])
+   E = set(w.keys()) #MODIFIED FROM CAB203 digraphs.py
 
-
-
-
-
-   print(edges)
-   print(sources)
-   print(drains)
-
-   # Find maximum flow using function in digraphs.py
-   machineSettings = digraphs.maxFlow(V, E, w, s, drain)
+   # Find maximum flow using function FROM CAB203 digraphs.py
+   machineSettings = digraphs.maxFlow(V, E, w, source, drain)
 
    return machineSettings
-
 
 ## TEST HARNESS
 # The following will be run if you execute the file like python3 widget_n1234567.py widgetsamplefile.csv
