@@ -1,4 +1,7 @@
 # get a single element of a set. Don't care which
+from re import A
+
+
 def arbitraryElement(S):
     return next(iter(S))
 
@@ -136,7 +139,7 @@ if __name__ == "__main__":
          (5, 6): 2,
          (2, 4): 2,
          (3, 4): 2,
-         (5, 3): 2 }
+         (5, 3):2 }
    E = set(w.keys())
    s = 1
    d = 6

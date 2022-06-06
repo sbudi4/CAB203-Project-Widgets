@@ -56,14 +56,17 @@ def optimiseWidgets(filename):
    source = sources[0]
    drain = drains[0]
    w = {}
-   for each in range(len(components)):
+   for each in range(len(edges)):
       w[edges[each][0], edges[each][1]] = int(edges[each][2])
    E = set(w.keys()) #MODIFIED FROM CAB203 digraphs.py
 
    # Find maximum flow using function FROM CAB203 digraphs.py
-   machineSettings = digraphs.maxFlow(V, E, w, source, drain)
+   maxFlowData = digraphs.maxFlow(V, E, w, source, drain)
 
-   return machineSettings
+   # Converting result back into machine configurations
+   machineConfigs = {}
+
+   return maxFlowData
 
 ## TEST HARNESS
 # The following will be run if you execute the file like python3 widget_n1234567.py widgetsamplefile.csv
