@@ -1,4 +1,5 @@
 ### Importing dependencies ###
+from platform import machine
 import digraphs
 import csv
 
@@ -64,9 +65,18 @@ def optimiseWidgets(filename):
    maxFlowData = digraphs.maxFlow(V, E, w, source, drain)
 
    # Converting result back into machine configurations
+   machineConfigsArray = []
    machineConfigs = {}
 
-   return maxFlowData
+   for each in maxFlowData:
+      if maxFlowData[each]:
+         preVertex, postVertex = each
+         machineConfigsArray.append([preVertex, maxFlowData[each]])
+   
+   for each in range(len(machineConfigsArray)):
+      machineConfigs[machineConfigsArray[each][0]] = int(machineConfigsArray[each][1])
+
+   return machineConfigs
 
 ## TEST HARNESS
 # The following will be run if you execute the file like python3 widget_n1234567.py widgetsamplefile.csv
